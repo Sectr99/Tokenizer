@@ -130,12 +130,36 @@ main {
   position: relative;
   z-index: 10;
   width: 100%;
-  max-width: 980px;
-  padding: 32px 24px 80px;
+  max-width: 1200px;
+  padding: 20px 20px 60px;
   display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 28px;
+  grid-template-columns: 260px 1fr 260px;
+  gap: 20px;
   align-items: start;
+}
+
+/* Upload column (left) */
+.col-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Preview column (center) */
+.col-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: sticky;
+  top: 16px;
+}
+
+/* Controls column (right) */
+.col-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 /* ═══════════════ STONE PANELS ═══════════════ */
@@ -379,14 +403,14 @@ main {
 
 #export-btn {
   font-family: 'Cinzel', serif;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   color: #0a0600;
   background: linear-gradient(160deg, var(--torch-dim) 0%, var(--torch-amber) 35%, var(--torch-gold) 55%, var(--torch-bright) 75%, var(--torch-amber) 100%);
   border: none;
   border-radius: 2px;
-  padding: 14px 20px;
+  padding: 16px 24px;
   cursor: pointer;
   width: 100%;
   text-transform: uppercase;
@@ -395,7 +419,7 @@ main {
   transition: transform 0.1s, box-shadow 0.2s;
   box-shadow:
     0 1px 0 rgba(0,0,0,0.6),
-    0 3px 12px rgba(200,120,32,0.25),
+    0 4px 18px rgba(200,120,32,0.4),
     inset 0 1px 0 rgba(255,220,100,0.3);
   text-shadow: 0 1px 0 rgba(0,0,0,0.4);
 }
@@ -427,13 +451,26 @@ main {
 }
 
 /* ═══════════════ PREVIEW PANEL ═══════════════ */
-.preview-panel {
+.col-preview {
   position: sticky;
-  top: 28px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
+  top: 16px;
+}
+
+/* Stone archway frame — fills full column width */
+.preview-frame {
+  width: 100%;
+  position: relative;
+  padding: 10px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(200,120,32,0.06) 0%, transparent 60%),
+    linear-gradient(160deg, #1a1714 0%, #0e0c0a 100%);
+  border: 1px solid var(--stone-edge);
+  border-radius: 2px;
+  box-shadow:
+    inset 0 2px 0 rgba(0,0,0,0.5),
+    inset 0 0 30px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(200,120,32,0.06),
+    0 8px 32px rgba(0,0,0,0.6);
 }
 
 /* Stone archway frame */
@@ -542,6 +579,59 @@ main {
   border-radius: 1px;
   padding: 3px 8px;
   text-transform: uppercase;
+}
+
+/* ═══════════════ SAFE AREA RING ═══════════════ */
+#safe-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2px dashed rgba(200,120,32,0.6);
+  pointer-events: none;
+  z-index: 3;
+  transition: width 0.08s, height 0.08s;
+  box-shadow: 0 0 8px rgba(200,120,32,0.3);
+  display: none;
+}
+
+/* Safe area row — label + slider side by side */
+.safe-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.safe-row label {
+  font-size: 11px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.safe-row input[type=range] {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 3px;
+  background: linear-gradient(90deg, var(--stone-face), var(--stone-lift));
+  border-radius: 1px;
+  outline: none;
+  cursor: pointer;
+}
+.safe-row input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px; height: 13px;
+  border-radius: 1px;
+  background: linear-gradient(135deg, var(--torch-gold), var(--torch-amber));
+  cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px rgba(200,120,32,0.4);
+}
+.safe-val {
+  font-size: 11px;
+  color: var(--torch-gold);
+  width: 34px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ═══════════════ SCROLLBAR ═══════════════ */
@@ -729,33 +819,15 @@ footer {
   <div class="header-rule"></div>
 </header>
 
-<!-- HERO / FEATURES -->
-<div class="hero">
-  <h2>Create professional VTT tokens in seconds — no software needed.</h2>
-  <div class="features">
-    <div class="feat"><span class="feat-icon">📤</span> Upload any portrait</div>
-    <div class="feat"><span class="feat-icon">🛡</span> 10 border styles</div>
-    <div class="feat"><span class="feat-icon">✋</span> Drag to reposition</div>
-    <div class="feat"><span class="feat-icon">💾</span> Export transparent PNG</div>
-  </div>
-</div>
-
-<!-- STEP TABS -->
-<div class="step-nav">
-  <div class="step-tab active"><span class="step-num">1</span>Upload</div>
-  <div class="step-tab"><span class="step-num">2</span>Border</div>
-  <div class="step-tab"><span class="step-num">3</span>Adjust</div>
-  <div class="step-tab"><span class="step-num">4</span>Export</div>
-</div>
-
 <main>
-  <!-- LEFT COLUMN -->
-  <div>
+
+  <!-- LEFT COLUMN: Upload -->
+  <div class="col-upload">
 
     <div class="panel">
       <div class="section-head">
         <span class="section-icon" style="--flicker-delay:0.4s">🕯</span>
-        <span class="section-title">Upload Portrait</span>
+        <span class="section-title">Portrait</span>
       </div>
       <div id="drop-zone">
         <div class="drop-icon">🖼</div>
@@ -771,12 +843,42 @@ footer {
     <div class="panel">
       <div class="section-head">
         <span class="section-icon" style="--flicker-delay:0.9s">🕯</span>
-        <span class="section-title">Choose Border</span>
+        <span class="section-title">Border</span>
       </div>
       <div class="border-grid" id="border-grid"></div>
       <button id="add-border-btn">+ Add custom border</button>
       <input type="file" id="custom-border-input" accept="image/png,image/webp">
     </div>
+
+  </div>
+
+  <!-- CENTER COLUMN: Preview (dominant) -->
+  <div class="col-preview">
+    <div class="preview-frame">
+      <div class="bolt bolt-tl"></div>
+      <div class="bolt bolt-tr"></div>
+      <div class="bolt bolt-bl"></div>
+      <div class="bolt bolt-br"></div>
+      <div class="checker" id="checker">
+        <p class="no-img" id="no-img">Upload a portrait<br>and select a border.</p>
+        <canvas id="preview-canvas" width="512" height="512" style="display:none"></canvas>
+        <div id="safe-ring"></div>
+      </div>
+    </div>
+    <p class="drag-hint">Drag to reposition · Scroll to zoom</p>
+    <div class="badges">
+      <span class="badge">512 × 512</span>
+      <span class="badge">PNG</span>
+      <span class="badge">Alpha</span>
+    </div>
+
+    <!-- Download lives directly under the preview -->
+    <button id="export-btn" disabled>⬇ Download Token PNG</button>
+    <p class="export-hint">Transparent · Roll20 · Foundry · OwlBear</p>
+  </div>
+
+  <!-- RIGHT COLUMN: Controls -->
+  <div class="col-controls">
 
     <div class="panel">
       <div class="section-head">
@@ -802,34 +904,25 @@ footer {
 
     <div class="panel">
       <div class="section-head">
-        <span class="section-icon" style="--flicker-delay:0.2s">🕯</span>
-        <span class="section-title">Export Token</span>
+        <span class="section-icon" style="--flicker-delay:0.7s">🕯</span>
+        <span class="section-title">Safe Area</span>
       </div>
-      <button id="export-btn" disabled>Download Token PNG</button>
-      <p class="export-hint">512 × 512 px · Transparent background<br>Compatible with Roll20 · Foundry VTT · OwlBear Rodeo</p>
+      <div class="safe-row">
+        <label>Clip radius</label>
+        <input type="range" id="s-inner" min="60" max="256" value="200">
+        <span class="safe-val" id="v-inner">200</span>
+      </div>
+      <div class="link-row">
+        <input type="checkbox" id="show-ring">
+        <span>Show safe-area ring</span>
+      </div>
+      <p style="font-size:10px;color:var(--text-faint);margin-top:6px;line-height:1.6">
+        Pixels outside the ring are clipped by the border. Drag the slider to expand or tighten the visible area.
+      </p>
     </div>
 
   </div>
 
-  <!-- RIGHT COLUMN -->
-  <div class="preview-panel">
-    <div class="preview-frame">
-      <div class="bolt bolt-tl"></div>
-      <div class="bolt bolt-tr"></div>
-      <div class="bolt bolt-bl"></div>
-      <div class="bolt bolt-br"></div>
-      <div class="checker" id="checker">
-        <p class="no-img" id="no-img">Upload a portrait and<br>select a border to preview.</p>
-        <canvas id="preview-canvas" width="512" height="512" style="display:none"></canvas>
-      </div>
-    </div>
-    <p class="drag-hint">Drag to reposition · Scroll to zoom · Sliders to stretch</p>
-    <div class="badges">
-      <span class="badge">512 × 512</span>
-      <span class="badge">PNG</span>
-      <span class="badge">Alpha</span>
-    </div>
-  </div>
 </main>
 
 <!-- FOOTER -->
@@ -915,13 +1008,13 @@ ALL_BORDERS.forEach((b, i) => {
     document.querySelectorAll('.border-opt').forEach(x => x.classList.remove('sel'));
     d.classList.add('sel');
     const bi = new Image();
-    bi.onload = () => { borderImg = bi; borderInnerR = b.innerR; render(); };
+    bi.onload = () => { borderImg = bi; borderInnerR = b.innerR; innerSlider.value = borderInnerR; updateRing(); render(); };
     bi.src = src;
   });
   borderGrid.appendChild(d);
   if (i === 0) {
     const first = new Image();
-    first.onload = () => { borderImg = first; borderInnerR = b.innerR; render(); };
+    first.onload = () => { borderImg = first; borderInnerR = b.innerR; innerSlider.value = borderInnerR; updateRing(); render(); };
     first.src = src;
   }
 });
@@ -1022,6 +1115,31 @@ function syncSliders() {
   document.getElementById('v-sy').textContent = sySlider.value + '%';
 }
 document.getElementById('reset-btn').addEventListener('click', () => { ox=0;oy=0;sx=1;sy=1; syncSliders(); render(); });
+
+// ── Safe Area ─────────────────────────────────────────────────────────────
+const innerSlider = document.getElementById('s-inner');
+const innerVal    = document.getElementById('v-inner');
+const showRingCb  = document.getElementById('show-ring');
+const safeRing    = document.getElementById('safe-ring');
+
+function updateRing() {
+  const r = parseInt(innerSlider.value);
+  innerVal.textContent = r;
+  // The checker is square and maps 1:1 to SIZE (512px canvas).
+  // Convert canvas-space radius → percent of checker display size.
+  const pct = (r / 256) * 100;
+  safeRing.style.width  = pct + '%';
+  safeRing.style.height = pct + '%';
+  safeRing.style.display = showRingCb.checked ? 'block' : 'none';
+}
+
+innerSlider.addEventListener('input', function() {
+  borderInnerR = parseInt(this.value);
+  updateRing();
+  render();
+});
+
+showRingCb.addEventListener('change', updateRing);
 
 // ── Drag ──────────────────────────────────────────────────────────────────
 function canvasPos(e) {
