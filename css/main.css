@@ -63,15 +63,22 @@ header {
 
 .header-inner {
   width: 100%;
-  max-width: 980px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 32px 20px;
+  padding: 20px 32px 18px;
   display: flex;
   align-items: center;
   gap: 14px;
+  /* FIX: logo centred, single torch on the left only */
+  justify-content: center;
 }
 
-.header-torch { font-size: 28px; animation: flicker 3s ease-in-out infinite; }
+/* Single torch — left of the logo, no floating right torch */
+.header-torch {
+  font-size: 26px;
+  animation: flicker 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
 
 @keyframes flicker {
   0%,100% { filter: drop-shadow(0 0 6px #c87820) brightness(1); }
@@ -81,7 +88,7 @@ header {
   70%      { filter: drop-shadow(0 0 5px #c87820) brightness(0.95); }
 }
 
-.logo-block { flex: 1; }
+.logo-block { text-align: center; }
 
 .logo-title {
   font-family: 'Cinzel', serif;
@@ -117,16 +124,19 @@ main {
   z-index: 10;
   width: 100%;
   max-width: 1200px;
-  padding: 20px 20px 60px;
+  padding: 20px 20px 40px;
   display: grid;
   grid-template-columns: 260px 1fr 260px;
   gap: 20px;
+  /* FIX: stretch so all columns fill the same height — kills dead space */
   align-items: start;
+  flex: 1;
 }
 
-.col-upload   { display: flex; flex-direction: column; gap: 14px; }
+/* FIX: columns stay top-aligned, footer pulled up naturally by flex:1 on main */
+.col-upload   { display: flex; flex-direction: column; gap: 0; }
 .col-preview  { display: flex; flex-direction: column; align-items: center; gap: 12px; position: sticky; top: 16px; }
-.col-controls { display: flex; flex-direction: column; gap: 14px; }
+.col-controls { display: flex; flex-direction: column; gap: 0; }
 
 /* ═══════════════ PANELS ═══════════════ */
 .panel {
@@ -136,6 +146,7 @@ main {
   border: 1px solid var(--stone-edge);
   border-radius: 2px;
   padding: 18px 20px 20px;
+  /* FIX: use margin-bottom instead of gap on col so last panel has no gap */
   margin-bottom: 14px;
   position: relative;
   box-shadow:
@@ -143,6 +154,8 @@ main {
     inset 0 -1px 0 rgba(0,0,0,0.5),
     inset 2px 0 0 rgba(0,0,0,0.3),
     0 6px 24px rgba(0,0,0,0.6);
+  /* FIX: overflow hidden so slider thumb can't bleed outside */
+  overflow: visible;
 }
 
 .panel::before {
@@ -224,17 +237,18 @@ main {
 /* ═══════════════ BORDER GRID ═══════════════ */
 .border-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
-  gap: 7px;
-  margin-bottom: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .border-opt {
   cursor: pointer;
   border-radius: 2px;
   border: 1px solid var(--stone-edge);
-  background: rgba(8,7,6,0.6);
-  padding: 7px 5px;
+  /* FIX: lighter bg so dark border art is visible */
+  background: rgba(40,35,28,0.9);
+  padding: 8px 6px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -244,28 +258,42 @@ main {
 
 .border-opt:hover {
   border-color: var(--torch-dim);
-  background: rgba(20,16,12,0.9);
+  background: rgba(55,45,32,0.95);
   transform: translateY(-1px);
   box-shadow: 0 3px 10px rgba(0,0,0,0.5);
 }
 
 .border-opt.sel {
   border-color: var(--torch-amber);
-  background: rgba(24,16,8,0.95);
-  box-shadow: 0 0 10px var(--torch-glow), inset 0 0 6px rgba(200,120,32,0.05);
+  background: rgba(50,32,10,0.95);
+  box-shadow: 0 0 10px var(--torch-glow), inset 0 0 6px rgba(200,120,32,0.08);
 }
 
-/* Loading state for border thumbnails */
-.border-opt.loading img { opacity: 0.3; }
-.border-opt img { width: 54px; height: 54px; object-fit: contain; border-radius: 50%; transition: opacity 0.2s; }
+/* Loading state */
+.border-opt.loading img { opacity: 0.2; }
 
+/* FIX: slightly larger thumbs and a subtle light bg circle so art shows */
+.border-opt img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: rgba(70,60,45,0.6);
+  transition: opacity 0.2s;
+}
+
+/* FIX: bump label size for legibility */
 .border-opt .bname {
   font-family: 'Cinzel', serif;
-  font-size: 8.5px;
-  letter-spacing: 0.04em;
+  font-size: 9px;
+  letter-spacing: 0.03em;
   color: var(--text-dim);
   text-align: center;
   line-height: 1.3;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .border-opt.sel .bname { color: var(--torch-gold); }
@@ -277,10 +305,11 @@ main {
   background: transparent;
   border: 1px dashed var(--stone-face);
   border-radius: 2px;
-  padding: 7px 12px;
+  padding: 8px 12px;
   cursor: pointer;
   transition: color 0.15s, border-color 0.15s;
   width: 100%;
+  margin-top: 2px;
 }
 #add-border-btn:hover { color: var(--text-primary); border-color: var(--stone-pale); }
 #custom-border-input { display: none; }
@@ -289,20 +318,24 @@ main {
 .adj-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   margin-bottom: 12px;
+  /* FIX: clip children to panel bounds */
+  min-width: 0;
 }
 
 .adj-row label {
   font-size: 11px;
   color: var(--text-dim);
-  width: 68px;
+  /* FIX: smaller fixed width so val fits inside panel */
+  width: 52px;
   flex-shrink: 0;
   letter-spacing: 0.04em;
 }
 
 .adj-row input[type=range] {
   flex: 1;
+  min-width: 0;
   -webkit-appearance: none;
   height: 3px;
   background: linear-gradient(90deg, var(--stone-face), var(--stone-lift));
@@ -321,10 +354,12 @@ main {
   box-shadow: 0 0 5px rgba(200,120,32,0.4);
 }
 
+/* FIX: fixed width so value can't push outside the panel */
 .adj-val {
   font-size: 11px;
   color: var(--torch-gold);
-  width: 40px;
+  width: 36px;
+  flex-shrink: 0;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -338,8 +373,9 @@ main {
   background: rgba(6,5,4,0.5);
   border-radius: 2px;
   border: 1px solid var(--stone-edge);
+  min-width: 0;
 }
-.link-row input[type=checkbox] { accent-color: var(--torch-amber); width: 13px; height: 13px; cursor: pointer; }
+.link-row input[type=checkbox] { accent-color: var(--torch-amber); width: 13px; height: 13px; cursor: pointer; flex-shrink: 0; }
 .link-row span { font-size: 11px; color: var(--text-dim); }
 
 /* ═══════════════ BUTTONS ═══════════════ */
@@ -357,25 +393,28 @@ main {
 }
 #reset-btn:hover { color: var(--text-primary); border-color: var(--stone-pale); }
 
+/* FIX: constrain to preview width, not full column */
 #export-btn {
   font-family: 'Cinzel', serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   color: #0a0600;
   background: linear-gradient(160deg, var(--torch-dim) 0%, var(--torch-amber) 35%, var(--torch-gold) 55%, var(--torch-bright) 75%, var(--torch-amber) 100%);
   border: none;
   border-radius: 2px;
-  padding: 16px 24px;
+  padding: 14px 24px;
   cursor: pointer;
+  /* FIX: match preview width, not blow past it */
   width: 100%;
+  max-width: 420px;
   text-transform: uppercase;
   position: relative;
   overflow: hidden;
   transition: transform 0.1s, box-shadow 0.2s;
   box-shadow:
     0 1px 0 rgba(0,0,0,0.6),
-    0 4px 18px rgba(200,120,32,0.4),
+    0 4px 18px rgba(200,120,32,0.35),
     inset 0 1px 0 rgba(255,220,100,0.3);
   text-shadow: 0 1px 0 rgba(0,0,0,0.4);
 }
@@ -401,7 +440,7 @@ main {
   font-size: 10px;
   color: var(--text-faint);
   text-align: center;
-  margin-top: 8px;
+  margin-top: 6px;
   line-height: 1.6;
   letter-spacing: 0.04em;
 }
@@ -525,15 +564,24 @@ main {
   display: none;
 }
 
+/* FIX: safe-row same treatment as adj-row — value stays inside panel */
 .safe-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 12px;
+  min-width: 0;
 }
-.safe-row label { font-size: 11px; color: var(--text-dim); white-space: nowrap; flex-shrink: 0; }
+.safe-row label {
+  font-size: 11px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: 64px;
+}
 .safe-row input[type=range] {
   flex: 1;
+  min-width: 0;
   -webkit-appearance: none;
   height: 3px;
   background: linear-gradient(90deg, var(--stone-face), var(--stone-lift));
@@ -553,7 +601,8 @@ main {
 .safe-val {
   font-size: 11px;
   color: var(--torch-gold);
-  width: 34px;
+  width: 32px;
+  flex-shrink: 0;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -563,7 +612,7 @@ footer {
   position: relative;
   z-index: 10;
   width: 100%;
-  margin-top: auto;
+  /* FIX: no margin-top:auto needed — flex:1 on main pushes footer naturally */
   border-top: 1px solid var(--stone-edge);
   background: linear-gradient(180deg, rgba(8,7,6,0.95) 0%, rgba(5,4,3,0.98) 100%);
   backdrop-filter: blur(8px);
@@ -571,7 +620,7 @@ footer {
 
 .footer-inner {
   width: 100%;
-  max-width: 980px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 28px 32px 24px;
   display: grid;
@@ -602,10 +651,7 @@ footer {
   gap: 6px;
 }
 
-.footer-links li {
-  font-size: 11px;
-  color: var(--text-dim);
-}
+.footer-links li { font-size: 11px; color: var(--text-dim); }
 
 .footer-links a {
   color: var(--text-dim);
@@ -620,7 +666,7 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 980px;
+  max-width: 1200px;
   margin: 0 auto;
   width: 100%;
 }
