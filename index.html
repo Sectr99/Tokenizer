@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="tokenforge">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +8,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/main.css">
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center">
 
 <canvas id="bg-canvas"></canvas>
 
-<header>
-  <div class="header-inner">
-    <!-- FIX: single torch flanking the logo symmetrically, second removed -->
+<header class="tf-header">
+  <div class="tf-header-inner">
     <span class="header-torch">🔥</span>
-    <div class="logo-block">
+    <div class="text-center">
       <div class="logo-title">Token Forge</div>
       <div class="logo-sub">VTT Token Maker</div>
     </div>
@@ -25,41 +24,46 @@
   <div class="header-rule"></div>
 </header>
 
-<main>
+<main class="relative z-10 w-full max-w-[1200px] px-5 py-5 pb-10 grid gap-5 flex-1"
+      style="grid-template-columns: 260px 1fr 260px; align-items: start;">
 
   <!-- LEFT: Upload -->
-  <div class="col-upload">
+  <div class="flex flex-col">
 
-    <div class="panel">
-      <div class="section-head">
+    <div class="tf-panel">
+      <div class="tf-section-head">
         <span class="section-icon" style="--flicker-delay:0.4s">🕯</span>
         <span class="section-title">Portrait</span>
       </div>
       <div id="drop-zone">
-        <div class="drop-icon">🖼</div>
-        <p id="dz-text">
-          <strong>Drop image here</strong><br>
+        <div class="text-3xl mb-2">🖼</div>
+        <p id="dz-text" class="text-[13px] leading-relaxed" style="color:var(--text-dim)">
+          <strong class="font-medium" style="color:var(--text-primary)">Drop image here</strong><br>
           or click to browse<br>
-          <span style="font-size:11px">PNG · JPG · WEBP</span>
+          <span class="text-[11px]">PNG · JPG · WEBP</span>
         </p>
       </div>
-      <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp">
+      <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp" class="hidden">
     </div>
 
-    <div class="panel">
-      <div class="section-head">
+    <div class="tf-panel">
+      <div class="tf-section-head">
         <span class="section-icon" style="--flicker-delay:0.9s">🕯</span>
         <span class="section-title">Border</span>
       </div>
       <div class="border-grid" id="border-grid"></div>
-      <button id="add-border-btn">+ Add custom border</button>
-      <input type="file" id="custom-border-input" accept="image/png,image/webp">
+      <button id="add-border-btn"
+              class="btn btn-ghost btn-sm btn-block text-[11px] border-dashed mt-0.5"
+              style="border-color:var(--stone-face);color:var(--text-dim)">
+        + Add custom border
+      </button>
+      <input type="file" id="custom-border-input" accept="image/png,image/webp" class="hidden">
     </div>
 
   </div>
 
   <!-- CENTER: Preview -->
-  <div class="col-preview">
+  <div class="flex flex-col items-center gap-3 sticky top-4">
     <div class="preview-frame">
       <div class="bolt bolt-tl"></div>
       <div class="bolt bolt-tr"></div>
@@ -71,57 +75,89 @@
         <div id="safe-ring"></div>
       </div>
     </div>
-    <p class="drag-hint">Drag to reposition · Scroll to zoom</p>
-    <div class="badges">
-      <span class="badge">512 × 512</span>
-      <span class="badge">PNG</span>
-      <span class="badge">Alpha</span>
+
+    <p class="text-[10px] tracking-widest" style="color:var(--text-faint)">
+      Drag to reposition · Scroll to zoom
+    </p>
+
+    <div class="flex gap-1.5 flex-wrap justify-center">
+      <span class="badge badge-outline badge-sm text-[9px] tracking-widest uppercase"
+            style="color:var(--text-faint);border-color:var(--stone-edge)">512 × 512</span>
+      <span class="badge badge-outline badge-sm text-[9px] tracking-widest uppercase"
+            style="color:var(--text-faint);border-color:var(--stone-edge)">PNG</span>
+      <span class="badge badge-outline badge-sm text-[9px] tracking-widest uppercase"
+            style="color:var(--text-faint);border-color:var(--stone-edge)">Alpha</span>
     </div>
-    <!-- FIX: button width constrained by max-width in CSS, centred here -->
+
     <button id="export-btn" disabled>⬇ Download Token PNG</button>
-    <p class="export-hint">Transparent · Roll20 · Foundry · OwlBear</p>
+
+    <p class="text-[10px] text-center tracking-wide" style="color:var(--text-faint)">
+      Transparent · Roll20 · Foundry · OwlBear
+    </p>
   </div>
 
   <!-- RIGHT: Controls -->
-  <div class="col-controls">
+  <div class="flex flex-col">
 
-    <div class="panel">
-      <div class="section-head">
+    <div class="tf-panel">
+      <div class="tf-section-head">
         <span class="section-icon" style="--flicker-delay:1.6s">🕯</span>
         <span class="section-title">Scale &amp; Position</span>
       </div>
-      <div class="adj-row">
-        <label>Scale X</label>
-        <input type="range" id="s-sx" min="20" max="250" value="100">
-        <span class="adj-val" id="v-sx">100%</span>
+
+      <div class="flex items-center gap-2 mb-3 min-w-0">
+        <label for="s-sx" class="text-[11px] w-[52px] shrink-0 tracking-wide"
+               style="color:var(--text-dim)">Scale X</label>
+        <input type="range" id="s-sx" min="20" max="250" value="100"
+               class="range range-primary range-xs flex-1 min-w-0">
+        <span class="text-[11px] w-9 shrink-0 text-right tabular-nums" id="v-sx"
+              style="color:var(--torch-gold)">100%</span>
       </div>
-      <div class="adj-row">
-        <label>Scale Y</label>
-        <input type="range" id="s-sy" min="20" max="250" value="100">
-        <span class="adj-val" id="v-sy">100%</span>
+
+      <div class="flex items-center gap-2 mb-3 min-w-0">
+        <label for="s-sy" class="text-[11px] w-[52px] shrink-0 tracking-wide"
+               style="color:var(--text-dim)">Scale Y</label>
+        <input type="range" id="s-sy" min="20" max="250" value="100"
+               class="range range-primary range-xs flex-1 min-w-0">
+        <span class="text-[11px] w-9 shrink-0 text-right tabular-nums" id="v-sy"
+              style="color:var(--torch-gold)">100%</span>
       </div>
-      <div class="link-row">
-        <input type="checkbox" id="link-axes" checked>
-        <span>Lock X &amp; Y together</span>
+
+      <div class="tf-link-row">
+        <input type="checkbox" id="link-axes" checked
+               class="checkbox checkbox-primary checkbox-xs">
+        <span class="text-[11px]" style="color:var(--text-dim)">Lock X &amp; Y together</span>
       </div>
-      <button id="reset-btn">Reset position &amp; scale</button>
+
+      <button id="reset-btn"
+              class="btn btn-ghost btn-sm btn-block text-[11px] border mt-0.5"
+              style="border-color:var(--stone-edge);color:var(--text-dim)">
+        Reset position &amp; scale
+      </button>
     </div>
 
-    <div class="panel">
-      <div class="section-head">
+    <div class="tf-panel">
+      <div class="tf-section-head">
         <span class="section-icon" style="--flicker-delay:0.7s">🕯</span>
         <span class="section-title">Safe Area</span>
       </div>
-      <div class="safe-row">
-        <label>Clip radius</label>
-        <input type="range" id="s-inner" min="60" max="256" value="200">
-        <span class="safe-val" id="v-inner">200</span>
+
+      <div class="flex items-center gap-2 mb-3 min-w-0">
+        <label for="s-inner" class="text-[11px] w-16 shrink-0"
+               style="color:var(--text-dim)">Clip radius</label>
+        <input type="range" id="s-inner" min="60" max="256" value="200"
+               class="range range-secondary range-xs flex-1 min-w-0">
+        <span class="text-[11px] w-8 shrink-0 text-right tabular-nums" id="v-inner"
+              style="color:var(--torch-gold)">200</span>
       </div>
-      <div class="link-row">
-        <input type="checkbox" id="show-ring">
-        <span>Show safe-area ring</span>
+
+      <div class="tf-link-row">
+        <input type="checkbox" id="show-ring"
+               class="checkbox checkbox-secondary checkbox-xs">
+        <span class="text-[11px]" style="color:var(--text-dim)">Show safe-area ring</span>
       </div>
-      <p style="font-size:10px;color:var(--text-faint);margin-top:6px;line-height:1.6">
+
+      <p class="text-[10px] leading-relaxed mt-1.5" style="color:var(--text-faint)">
         Pixels outside the ring are clipped by the border. Drag the slider to expand or tighten the visible area.
       </p>
     </div>
@@ -130,33 +166,54 @@
 
 </main>
 
-<footer>
-  <div class="footer-inner">
-    <div class="footer-col">
-      <h4>Token Forge</h4>
-      <p>A free browser tool for creating VTT character tokens. No account, no upload — everything runs locally.</p>
+<footer class="tf-footer">
+  <div class="w-full max-w-[1200px] mx-auto px-8 py-7 grid grid-cols-3 gap-7">
+    <div>
+      <h4 class="tf-footer-heading">Token Forge</h4>
+      <p class="text-[11px] leading-relaxed" style="color:var(--text-dim)">
+        A free browser tool for creating VTT character tokens. No account, no upload — everything runs locally.
+      </p>
     </div>
-    <div class="footer-col">
-      <h4>Resources</h4>
-      <ul class="footer-links">
-        <li><a href="https://github.com/Sectr99/Tokenizer" target="_blank">GitHub Repository</a></li>
-        <li><a href="https://github.com/Sectr99/Tokenizer/issues" target="_blank">Report an Issue</a></li>
-        <li><a href="https://github.com/Sectr99/Tokenizer/blob/main/CHANGELOG.md" target="_blank">Changelog</a></li>
+    <div>
+      <h4 class="tf-footer-heading">Resources</h4>
+      <ul class="flex flex-col gap-1.5 list-none">
+        <li>
+          <a href="https://github.com/Sectr99/Tokenizer" target="_blank"
+             class="text-[11px] transition-colors duration-150"
+             style="color:var(--text-dim)"
+             onmouseover="this.style.color='var(--torch-gold)'"
+             onmouseout="this.style.color='var(--text-dim)'">GitHub Repository</a>
+        </li>
+        <li>
+          <a href="https://github.com/Sectr99/Tokenizer/issues" target="_blank"
+             class="text-[11px] transition-colors duration-150"
+             style="color:var(--text-dim)"
+             onmouseover="this.style.color='var(--torch-gold)'"
+             onmouseout="this.style.color='var(--text-dim)'">Report an Issue</a>
+        </li>
+        <li>
+          <a href="https://github.com/Sectr99/Tokenizer/blob/main/CHANGELOG.md" target="_blank"
+             class="text-[11px] transition-colors duration-150"
+             style="color:var(--text-dim)"
+             onmouseover="this.style.color='var(--torch-gold)'"
+             onmouseout="this.style.color='var(--text-dim)'">Changelog</a>
+        </li>
       </ul>
     </div>
-    <div class="footer-col">
-      <h4>Compatibility</h4>
-      <ul class="footer-links">
-        <li>Roll20</li>
-        <li>Foundry VTT</li>
-        <li>OwlBear Rodeo</li>
-        <li>Any VTT supporting PNG tokens</li>
+    <div>
+      <h4 class="tf-footer-heading">Compatibility</h4>
+      <ul class="flex flex-col gap-1.5 list-none">
+        <li class="text-[11px]" style="color:var(--text-dim)">Roll20</li>
+        <li class="text-[11px]" style="color:var(--text-dim)">Foundry VTT</li>
+        <li class="text-[11px]" style="color:var(--text-dim)">OwlBear Rodeo</li>
+        <li class="text-[11px]" style="color:var(--text-dim)">Any VTT supporting PNG tokens</li>
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    <span>© 2025 Token Forge — MIT License</span>
-    <span>v2.0.0</span>
+  <div class="border-t w-full max-w-[1200px] mx-auto px-8 py-3.5 flex justify-between items-center"
+       style="border-color:var(--stone-edge)">
+    <span class="text-[10px] tracking-wide" style="color:var(--text-faint)">© 2025 Token Forge — MIT License</span>
+    <span class="text-[10px] tracking-wide" style="color:var(--text-faint)">v2.0.0</span>
   </div>
 </footer>
 
