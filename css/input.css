@@ -533,6 +533,93 @@ body::after {
 }
 .footer-links a:hover { color: var(--torch-gold); }
 
+/* ── Custom range slider ── */
+.tf-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  background: var(--stone-face);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  margin: 7px 0;
+  flex-shrink: 1;
+}
+.tf-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: var(--torch-amber);
+  border: 2px solid var(--stone-mid);
+  box-shadow: 0 0 6px rgba(200,120,32,0.35);
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+.tf-range::-webkit-slider-thumb:hover {
+  background: var(--torch-gold);
+  box-shadow: 0 0 10px rgba(200,120,32,0.55);
+}
+.tf-range::-moz-range-thumb {
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: var(--torch-amber);
+  border: 2px solid var(--stone-mid);
+  cursor: pointer;
+}
+
+/* ── Small sidebar button ── */
+.tf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--text-dim);
+  background: rgba(6,5,4,0.6);
+  border: 1px solid var(--stone-edge);
+  border-radius: 2px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+.tf-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--torch-dim);
+  background: rgba(200,120,32,0.08);
+}
+.tf-btn-block { width: 100%; margin-top: 4px; }
+
+/* ── Custom checkbox ── */
+.tf-check {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px; height: 14px;
+  border: 1px solid var(--stone-face);
+  border-radius: 2px;
+  background: var(--stone-dark);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: border-color 0.15s, background 0.15s;
+  position: relative;
+  vertical-align: middle;
+}
+.tf-check:checked {
+  background: var(--torch-amber);
+  border-color: var(--torch-amber);
+}
+.tf-check:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 1px;
+  width: 5px; height: 8px;
+  border: 2px solid #0a0600;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--stone-darkest); }
