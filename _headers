@@ -12,10 +12,12 @@
 /css/*
   Cache-Control: public, max-age=31536000, immutable
 
-# HTML — always revalidate so users get the latest shell
+# HTML — always revalidate and declare UTF-8 so browsers don't misread emojis
 /index.html
   Cache-Control: public, max-age=0, must-revalidate
+  Content-Type: text/html; charset=utf-8
 
 # Root — same as index.html
 /
   Cache-Control: public, max-age=0, must-revalidate
+  Content-Type: text/html; charset=utf-8
