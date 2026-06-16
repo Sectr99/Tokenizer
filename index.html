@@ -126,6 +126,54 @@
 
     <details class="tf-collapse">
       <summary class="panel-label">
+        Image
+        <span class="tf-collapse-arrow">▾</span>
+      </summary>
+      <div class="tf-collapse-body">
+
+        <div class="flex items-center gap-2 mb-3 min-w-0">
+          <label for="s-bright" class="text-[11px] w-[52px] shrink-0" style="color:var(--text-dim)">Brightness</label>
+          <input type="range" id="s-bright" min="0" max="200" value="100"
+                 class="range range-primary range-xs flex-1 min-w-0">
+          <span class="text-[11px] w-7 shrink-0 text-right tabular-nums" id="v-bright"
+                style="color:var(--torch-gold)">100</span>
+        </div>
+
+        <div class="flex items-center gap-2 mb-3 min-w-0">
+          <label for="s-contrast" class="text-[11px] w-[52px] shrink-0" style="color:var(--text-dim)">Contrast</label>
+          <input type="range" id="s-contrast" min="0" max="200" value="100"
+                 class="range range-primary range-xs flex-1 min-w-0">
+          <span class="text-[11px] w-7 shrink-0 text-right tabular-nums" id="v-contrast"
+                style="color:var(--torch-gold)">100</span>
+        </div>
+
+        <div class="flex items-center gap-2 mb-3 min-w-0">
+          <label for="s-sat" class="text-[11px] w-[52px] shrink-0" style="color:var(--text-dim)">Saturation</label>
+          <input type="range" id="s-sat" min="0" max="200" value="100"
+                 class="range range-primary range-xs flex-1 min-w-0">
+          <span class="text-[11px] w-7 shrink-0 text-right tabular-nums" id="v-sat"
+                style="color:var(--torch-gold)">100</span>
+        </div>
+
+        <div class="flex gap-2 mb-3">
+          <button id="btn-flip" class="btn btn-ghost btn-xs flex-1 border"
+                  style="border-color:var(--stone-edge);color:var(--text-dim)">⇔ Flip</button>
+          <button id="btn-rot"  class="btn btn-ghost btn-xs flex-1 border"
+                  style="border-color:var(--stone-edge);color:var(--text-dim)">↻ Rotate 90°</button>
+        </div>
+
+        <button id="reset-adj" class="btn btn-ghost btn-sm btn-block text-[11px] border mt-1"
+                style="border-color:var(--stone-edge);color:var(--text-dim)">
+          Reset adjustments
+        </button>
+
+      </div>
+    </details>
+
+    <div class="tf-sidebar-divider"></div>
+
+    <details class="tf-collapse">
+      <summary class="panel-label">
         Safe Area
         <span class="tf-collapse-arrow">▾</span>
       </summary>

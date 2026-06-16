@@ -11,6 +11,11 @@ let borderInnerR = 200;     // current clip radius (canvas px)
 let ox = 0, oy = 0;        // portrait offset from centre
 let sx = 1, sy = 1;        // portrait scale
 let drag = { active: false, startX: 0, startY: 0, startOx: 0, startOy: 0 };
+let brightness  = 100;
+let contrast    = 100;
+let saturation  = 100;
+let flipH       = false;
+let rotation    = 0;
 
 // ── DOM refs ───────────────────────────────────────────────────────────────
 const canvas     = document.getElementById('preview-canvas');
@@ -293,7 +298,12 @@ function render() {
     const fit = Math.min(SIZE / portrait.width, SIZE / portrait.height);
     const dw  = portrait.width  * fit * sx;
     const dh  = portrait.height * fit * sy;
-    ctx.drawImage(portrait, SIZE / 2 + ox - dw / 2, SIZE / 2 + oy - dh / 2, dw, dh);
+    ctx.filter = `brightness(${brightness/100}) contrast(${contrast/100}) saturate(${saturation/100})`;
+    ctx.translate(SIZE / 2 + ox, SIZE / 2 + oy);
+    if (flipH) ctx.scale(-1, 1);
+    ctx.rotate(rotation * Math.PI / 180);
+    ctx.drawImage(portrait, -dw / 2, -dh / 2, dw, dh);
+    ctx.filter = 'none';
     ctx.restore();
   }
 
@@ -301,6 +311,47 @@ function render() {
 
   exportBtn.disabled = !(portrait && borderImg);
 }
+
+// ── Image adjustment listeners ───────────────────────────────────────────────
+document.getElementById('s-bright').addEventListener('input', function () {
+  brightness = parseInt(this.value);
+  document.getElementById('v-bright').textContent = this.value;
+  render();
+});
+
+document.getElementById('s-contrast').addEventListener('input', function () {
+  contrast = parseInt(this.value);
+  document.getElementById('v-contrast').textContent = this.value;
+  render();
+});
+
+document.getElementById('s-sat').addEventListener('input', function () {
+  saturation = parseInt(this.value);
+  document.getElementById('v-sat').textContent = this.value;
+  render();
+});
+
+document.getElementById('btn-flip').addEventListener('click', () => {
+  flipH = !flipH;
+  render();
+});
+
+document.getElementById('btn-rot').addEventListener('click', () => {
+  rotation = (rotation + 90) % 360;
+  render();
+});
+
+document.getElementById('reset-adj').addEventListener('click', () => {
+  brightness = 100; contrast = 100; saturation = 100;
+  flipH = false; rotation = 0;
+  document.getElementById('s-bright').value        = 100;
+  document.getElementById('v-bright').textContent  = '100';
+  document.getElementById('s-contrast').value      = 100;
+  document.getElementById('v-contrast').textContent = '100';
+  document.getElementById('s-sat').value           = 100;
+  document.getElementById('v-sat').textContent     = '100';
+  render();
+});
 
 // ── Export ───────────────────────────────────────────────────────────────────
 exportBtn.addEventListener('click', () => {
