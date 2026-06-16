@@ -144,6 +144,8 @@ body::after {
   position: relative;
   z-index: 10;
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 /* ── Sidebars ── */
@@ -215,10 +217,10 @@ body::after {
   box-shadow: 0 0 18px rgba(200,120,32,0.1), inset 0 0 16px rgba(200,120,32,0.04);
 }
 
-/* ── Border grid — 3 columns; add-btn lives inside as last grid item ── */
+/* ── Border grid — 2 columns to fit the sidebar width ── */
 .border-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 6px;
 }
 
