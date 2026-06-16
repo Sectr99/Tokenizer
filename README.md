@@ -2,31 +2,37 @@
 
 > A self-contained, browser-based VTT token maker for Roll20, Foundry VTT, OwlBear Rodeo, and any other virtual tabletop platform.
 
-![Token Forge](https://img.shields.io/badge/version-1.0.0-gold) ![License](https://img.shields.io/badge/license-MIT-blue) ![No Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
+![Token Forge](https://img.shields.io/badge/version-2.1.0-gold) ![License](https://img.shields.io/badge/license-MIT-blue) ![Deployed on Cloudflare](https://img.shields.io/badge/deployed-Cloudflare%20Pages-orange)
 
 ---
 
 ## ✨ Features
 
 - **Upload any portrait** — PNG, JPG, or WEBP
-- **9 built-in borders** — Iron Ring, Gold Signet, Blood Pact, Arcane, Nature, Spectral, Infernal, Draconic, Ancient Stone
+- **10 built-in borders** — Iron Ring, Celtic Gold, Vine Serpent, Blood Ruby, Runic Amethyst, Sapphire Knot, Dragon Coil, Dwarven Rune, Iron Barb, Copper Vine
 - **Drag to reposition** — click and drag the portrait inside the token frame
 - **Scroll to zoom** — mousewheel over the preview to scale
 - **Independent X/Y scaling** — stretch horizontally or vertically with separate sliders
+- **Image adjustments** — brightness, contrast, saturation sliders; flip horizontal; rotate 90°
 - **Custom borders** — upload your own 512×512 PNG border at any time
+- **Safe area overlay** — toggle a ring to see what the border clips
 - **Export** — downloads a 512×512 transparent PNG ready for any VTT
 
 ## 🚀 Usage
 
-No installation, no server, no dependencies. Just open `index.html` in any modern browser.
+**Online:** visit the Cloudflare Pages deployment (no install required).
+
+**Local dev:**
 
 ```bash
 git clone https://github.com/Sectr99/Tokenizer.git
 cd Tokenizer
-open index.html
+npm install
+npm run dev        # watch mode — rebuilds CSS on change
+npx serve . -l 3000
 ```
 
-Or download the ZIP and open `index.html` directly.
+Or just open `index.html` directly after running `npm run build:css` once.
 
 ## 🖼 Custom Borders
 
@@ -40,16 +46,23 @@ To use your own border art:
 
 ```
 Tokenizer/
-├── index.html        # The entire app — self-contained
+├── index.html        # App shell
+├── css/
+│   ├── input.css     # Tailwind v4 source
+│   └── main.css      # Built output (committed)
+├── js/
+│   ├── app.js        # Canvas logic + event handlers
+│   └── borders.js    # Border definitions
+├── assets/           # Border images
+├── package.json      # Build scripts (Tailwind CLI)
+├── wrangler.jsonc    # Cloudflare Pages config
 ├── README.md         # This file
 ├── LICENSE           # MIT License
-├── .gitignore        # Git ignore rules
 └── CHANGELOG.md      # Version history
 ```
 
 ## 🗺 Roadmap
 
-- [ ] More preset border styles
 - [ ] Color tint overlay per border
 - [ ] Token size presets (Small / Medium / Large / Huge)
 - [ ] Text label beneath token
